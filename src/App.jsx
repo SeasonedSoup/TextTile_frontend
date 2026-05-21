@@ -12,6 +12,9 @@ function App() {
         <input id="username" name="username "type="text" />
         <label htmlFor="password">Password</label>
         <input type="password" name="password" id="password" />
+        <label htmlFor="confirmPassword">Confirm Password:</label>
+        <input type="password" htmlFor="confirmPassword" />
+
         <button>Create Account</button>
       </form>
     </>
