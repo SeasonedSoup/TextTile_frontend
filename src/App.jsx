@@ -1,13 +1,29 @@
+import { useState } from 'react'
 import './App.css'
+import './styles/reset.css'
 
 function App() {
+  const [showForm, setShowForm] = useState(false);
+
+  function signUp() {
+    if (showForm) {
+      setShowForm(false);
+    } else {
+      setShowForm(true);
+    }
+  }
+
 
   return (
-    <>
-      <h1 className='callToAction'>Welcome to TextTile</h1>
-      <h2>TextTile is a cool chatting platform where you can chat and talk with other people! (not real-time) <br /> Sign Up now with your username! </h2>
-      <button>Sign Up</button>
-      <form action="#">
+    <div className='wrapper'>
+      <div className='text'>
+        <h1 className='callToAction'>Welcome to TextTile</h1>
+        <h2>TextTile is a cool chatting platform where you can chat and talk with other people! (not real-time) <br /> Sign Up now with your username! </h2>
+      </div>
+      <button className="signUpBtn" onClick={signUp}>Sign Up</button>
+      
+      {showForm &&
+      <form className='signUpForm' action="#">
         <label htmlFor="username">Username: </label>
         <input id="username" name="username "type="text" />
         <label htmlFor="password">Password</label>
@@ -17,7 +33,8 @@ function App() {
 
         <button>Create Account</button>
       </form>
-    </>
+      }
+    </div>
   )
 }
 
