@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import './App.css'
 import './styles/reset.css'
-
+import Header from './Header';
 function App() {
   const [showForm, setShowForm] = useState(false);
 
@@ -16,6 +16,7 @@ function App() {
 
   return (
     <div className='wrapper'>
+      <Header></Header>
       <div className='text'>
         <h1 className='callToAction'>Welcome to TextTile</h1>
         <h2>TextTile is a cool chatting platform where you can chat and talk with other people! (not real-time) <br /> Sign Up now with your username! </h2>
