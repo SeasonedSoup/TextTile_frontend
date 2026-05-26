@@ -3,5 +3,13 @@
     top: 0;
     left: 0;
     width: 100%;
-    background-color: rgb(153, 153, 153);
+    background-color: rgb(134, 134, 134);
+    display: flex;
+    align-items: center;
+    padding: 1em;
+    border-bottom: 2px solid white;
+}
+
+.headerTitle {
+    flex: 1;
 }

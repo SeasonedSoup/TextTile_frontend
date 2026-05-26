@@ -3,7 +3,7 @@ import './styles/header.css'
 function Header() {
     return ( 
     <div className="header">
-        <h1>TextTile</h1>
+        <h1 className='headerTitle'>TextTile</h1>
 
         <img src="" alt="default profile" />
         <h1>Hello, user!</h1>
