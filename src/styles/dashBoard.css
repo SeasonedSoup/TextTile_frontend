@@ -1,0 +1,34 @@
+.dashBoardWrapper {
+    height: 100%;
+    background-color: rgb(73, 101, 126);
+    display: flex;
+    flex-direction: column;
+}
+
+.mainContainer {
+    background-color: darkblue;
+    display: flex;
+    height: 100%;
+    margin-top: 5em;
+}
+
+.chatChoice {
+    flex: 1;
+    background-color: red;
+}
+
+.chatLayout {
+    background-color: gray;
+    flex: 5;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+}
+
+.messageBar {
+    width: 94.3%;
+}
+.users {
+    background-color: white;
+    flex: 1;
+}

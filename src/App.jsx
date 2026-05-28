@@ -35,6 +35,8 @@ function App() {
         <button>Create Account</button>
       </form>
       }
+
+      <a href="/TextTile-Dashboard">VIEW DASHBOARD</a>
     </div>
   )
 }
