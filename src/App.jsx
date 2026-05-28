@@ -13,6 +13,11 @@ function App() {
     }
   }
 
+  function createAccount() {
+    return 'hi';
+  }
+  
+
 
   return (
     <div className='wrapper'>
@@ -24,7 +29,7 @@ function App() {
       <button className="signUpBtn" onClick={signUp}>Sign Up</button>
       
       {showForm &&
-      <form className='signUpForm' action="#">
+      <form className='signUpForm' action="#" onSubmit={createAccount}>
         <label htmlFor="username">Username: </label>
         <input id="username" name="username "type="text" />
         <label htmlFor="password">Password</label>
