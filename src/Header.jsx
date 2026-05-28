@@ -6,6 +6,7 @@ function Header() {
         <h1 className='headerTitle'>TextTile</h1>
 
         <img src="" alt="default profile" />
+        <a href="/profile">Edit Profile</a>
         <h1>Hello, user!</h1>
         <button>Log in</button>
         <button>Log out</button>

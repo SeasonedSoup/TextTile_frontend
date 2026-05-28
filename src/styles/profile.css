@@ -1,0 +1,18 @@
+.profileLayout {
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.profileModal {
+    display: flex;
+    flex-direction: column;
+    border: solid 2px black;
+    border-radius: 12px;
+}
+
+.generalInfoForm, .passwordForm {
+    display: flex;
+    flex-direction: column;
+}

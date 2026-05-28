@@ -10,7 +10,9 @@ function Dashboard() {
         <div className='dashBoardWrapper'>
             <Header></Header>
             <div className='mainContainer'>
-                <div className="chatChoice"></div>
+                <div className="chatChoice">
+                    <h1>Chats</h1>
+                </div>
                 <div className="chatLayout">
                     <div className='message'>
                         <input className="messageBar" />
@@ -18,6 +20,7 @@ function Dashboard() {
                     </div>
                 </div>
                 <div className="users">
+                    <h1>Users</h1>
                     <button>Chat with this user each</button>
                 </div>
             </div>
