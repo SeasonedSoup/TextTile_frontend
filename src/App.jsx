@@ -1,20 +1,63 @@
-import { useState } from 'react'
+import {useState } from 'react'
 import './App.css'
 import './styles/reset.css'
 import Header from './Header';
+import getApiUrl from './utils/getApiUrl';
+
 function App() {
   const [showForm, setShowForm] = useState(false);
-
+  const [activeForm, setActiveForm] = useState('none');
+  
   function signUp() {
     if (showForm) {
       setShowForm(false);
     } else {
       setShowForm(true);
+      setActiveForm('signup');
     }
   }
 
-  function createAccount() {
-    return 'hi';
+  function login() {
+    if (showForm) {
+      setShowForm(false);
+    } else {
+      setShowForm(true);
+      setActiveForm('login');
+    }
+  }
+
+    const [username, setUsername] = useState("")
+    const [password, setPassword] = useState("")
+    const [confirmPassword, setConfirmPassword] = useState("")
+
+  async function createAccount(e) {
+    e.preventDefault();
+
+    if (password !== confirmPassword) {
+      alert('Passwords do not match');
+      return;
+    }
+
+    try {
+      const result = await fetch(getApiUrl() + '/signin', {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+          username,
+          password
+        })
+      });
+
+      if(!result.ok) {
+        throw new Error(`Error status: ${result.status}`);
+      }
+
+      console.log(result);
+    } catch (err) {
+      console.error(err);
+    }
   }
   
 
@@ -27,20 +70,30 @@ function App() {
         <h2>TextTile is a cool chatting platform where you can chat and talk with other people! (not real-time) <br /> Sign Up now with your username! </h2>
       </div>
       <button className="signUpBtn" onClick={signUp}>Sign Up</button>
+      <button className="signUpBtn" onClick={login}>Log In</button>
       
-      {showForm &&
-      <form className='signUpForm' action="#" onSubmit={createAccount}>
+      {showForm && activeForm === 'signup' &&
+      <form className='signUpForm' method="POST" onSubmit={createAccount} >
         <label htmlFor="username">Username: </label>
-        <input id="username" name="username "type="text" />
+        <input type="text" id="username" name="username" value={username} onChange={(e) => setUsername(e.target.value)} />
         <label htmlFor="password">Password</label>
-        <input type="password" name="password" id="password" />
+        <input type="password" name="password" id="password" value={password} onChange={(e) => setPassword(e.target.value)}/>
         <label htmlFor="confirmPassword">Confirm Password:</label>
-        <input type="password" htmlFor="confirmPassword" />
+        <input type="password" htmlFor="confirmPassword" value={confirmPassword} onChange={(e) => setConfirmPassword(e.target.value)}/>
 
         <button>Create Account</button>
       </form>
       }
 
+      { showForm && activeForm === 'login' &&
+        < form className='signUpForm' method="POST" onSubmit={createAccount}>
+        <label htmlFor="username">Username: </label>
+        <input type="text" id="username" name="username" value={username} onChange={(e) => setUsername(e.target.value)} />
+        <label htmlFor="password">Password</label>
+        <input type="password" name="password" id="password" value={password} onChange={(e) => setPassword(e.target.value)}/>
+        <button>Log In</button>
+      </form>
+      }
       <a href="/TextTile-Dashboard">VIEW DASHBOARD</a>
     </div>
   )
