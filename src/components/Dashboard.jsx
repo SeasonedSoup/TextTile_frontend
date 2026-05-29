@@ -1,4 +1,4 @@
-import './styles/dashBoard.css'
+import '../styles/dashBoard.css'
 import Header from './Header';
 function Dashboard() {
     function fetchUsers() {

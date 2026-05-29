@@ -1,6 +1,7 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { AuthContext } from "./AuthContext";
 import getApiUrl from "../../utils/getApiUrl";
+
 export const AuthProvider = ({children}) => {
     const [user, setUser] = useState(null);
     const [userLoading, setUserLoading] = useState(true);
@@ -17,7 +18,7 @@ export const AuthProvider = ({children}) => {
         }
 
         //second part verify token
-        const url = getApiUrl() + `/api/`
+        const url = getApiUrl() + `/`
         try {
             const response = await fetch(url, {
             method: "GET",
@@ -40,6 +41,11 @@ export const AuthProvider = ({children}) => {
             setUserLoading(false)
         }
     }
+
+     useEffect(() => {
+        verifyAuth();
+        console.log("VERIFYING TOKEN");
+    }, []); 
 
     return (
         <AuthContext.Provider value={{user, setUser, userLoading, verifyAuth}}>

@@ -3,9 +3,10 @@ import { createRoot } from 'react-dom/client';
 import {createBrowserRouter, RouterProvider} from 'react-router';
 import './index.css';
 import App from './App.jsx';
-import Dashboard from './Dashboard.jsx';
+import Dashboard from './components/Dashboard.jsx';
 import Profile from './Profile.jsx';
 
+import { AuthProvider } from './components/AuthToken/AuthProvider.jsx';
 const router = createBrowserRouter([
   {
     path: "/",
@@ -23,6 +24,8 @@ const router = createBrowserRouter([
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>
-    <RouterProvider router={router} />
+    <AuthProvider>
+      <RouterProvider router={router} />
+    </AuthProvider>
   </StrictMode>,
 )

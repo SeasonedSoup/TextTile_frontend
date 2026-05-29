@@ -1,13 +1,14 @@
 import {useState } from 'react'
 import './App.css'
 import './styles/reset.css'
-import Header from './Header';
+import Header from './components/Header';
 import getApiUrl from './utils/getApiUrl';
-
+import { useAuth } from './components/AuthToken/AuthContext';
 function App() {
   const [showForm, setShowForm] = useState(false);
   const [activeForm, setActiveForm] = useState('none');
-  
+  const {verifyAuth} = useAuth();
+
   function signUp() {
     if (showForm) {
       setShowForm(false);
@@ -55,6 +56,38 @@ function App() {
       }
 
       console.log(result);
+      verifyAuth();
+    } catch (err) {
+      console.error(err);
+    }
+  }
+
+  async function loginAccount(e) {
+    e.preventDefault();
+
+    if (!password || !username) {
+      return alert('password must not be empty');
+    }
+
+    try {
+      const response = await fetch(getApiUrl() + '/login', {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+          username,
+          password
+        })
+      });
+
+      if(!response.ok) {
+        throw new Error(`Error status: ${response.status}`);
+      }
+      const data = await response.json();
+        localStorage.setItem("token", data.token);
+        console.log("You got a token");
+        verifyAuth();
     } catch (err) {
       console.error(err);
     }
@@ -77,20 +110,20 @@ function App() {
         <label htmlFor="username">Username: </label>
         <input type="text" id="username" name="username" value={username} onChange={(e) => setUsername(e.target.value)} />
         <label htmlFor="password">Password</label>
-        <input type="password" name="password" id="password" value={password} onChange={(e) => setPassword(e.target.value)}/>
+        <input type="password" name="password" id="password" value={password} onChange={(e) => setPassword(e.target.value)} autoComplete="new-password"/>
         <label htmlFor="confirmPassword">Confirm Password:</label>
-        <input type="password" htmlFor="confirmPassword" value={confirmPassword} onChange={(e) => setConfirmPassword(e.target.value)}/>
+        <input type="password" htmlFor="confirmPassword" value={confirmPassword} onChange={(e) => setConfirmPassword(e.target.value)} autoComplete="new-password"/>
 
         <button>Create Account</button>
       </form>
       }
 
       { showForm && activeForm === 'login' &&
-        < form className='signUpForm' method="POST" onSubmit={createAccount}>
+        < form className='loginForm' method="POST" onSubmit={loginAccount}>
         <label htmlFor="username">Username: </label>
-        <input type="text" id="username" name="username" value={username} onChange={(e) => setUsername(e.target.value)} />
+        <input type="text" id="username" name="username" value={username} onChange={(e) => setUsername(e.target.value)} autoComplete="username" />
         <label htmlFor="password">Password</label>
-        <input type="password" name="password" id="password" value={password} onChange={(e) => setPassword(e.target.value)}/>
+        <input type="password" name="password" id="password" value={password} onChange={(e) => setPassword(e.target.value)} autoComplete="current-password"/>
         <button>Log In</button>
       </form>
       }
