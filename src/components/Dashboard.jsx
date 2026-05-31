@@ -5,7 +5,7 @@ import { useEffect, useState } from 'react';
 
 function Dashboard() {
     const [users, setUsers] = useState(null);
-    const [user, activeUser] = useState(null);
+    const [activeUser, setActiveUser] = useState(null);
     const [activeForm, setActiveForm] = useState(false);
 
     useEffect(() => {
@@ -21,7 +21,13 @@ function Dashboard() {
         fetchUsers();
     }, []);
 
+    function messageUser(e) {
+        e.preventDefault();
 
+        const formData = new FormData(e.target);
+        const selectedUser = formData.get("user");
+        setActiveUser(selectedUser);
+    }
 
 
 
@@ -31,10 +37,10 @@ function Dashboard() {
             <div className='mainContainer'>
                 <div className="chatChoice">
                     <button>Create Chat</button>
-                    {users && <form action="#">
+                    {users && <form action="#" onSubmit={messageUser}>
                                 <select name="user" id="username">
                                     {users.map((user) => {
-                                        return <option value={user.username}>{user.username}</option>
+                                        return <option key={user.username} value={user.username}>{user.username}</option>
                                     })}
                                 </select>
                                 <button>Message This User</button>
@@ -43,10 +49,15 @@ function Dashboard() {
                     <h1>Chats</h1>
                 </div>
                 <div className="chatLayout">
-                    <div className='message'>
-                        <input className="messageBar" />
-                        <button>Message user</button>
-                    </div>
+                    { activeUser ?  
+                        <div className='chat'>
+                            <h1 className='activeUser'>{activeUser}</h1>
+                            <div className='message'>
+                                <input className="messageBar" />
+                                <button>Message user</button>
+                            </div> 
+                        </div> : <h1>No active messages say hi to a user!</h1>
+                    }
                 </div>
                 <div className="users">
                     <h1>Users</h1>
@@ -54,7 +65,7 @@ function Dashboard() {
                         return (
                             <div key={user.id}>
                                 <h1>{user.username}</h1>
-                                <button>Message this user</button>
+                                <button onClick={() => setActiveUser(user.username)}>Message this user</button>
                             </div>)
                     })
                     : <h1>No Users found</h1>}

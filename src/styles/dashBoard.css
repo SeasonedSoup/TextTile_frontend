@@ -20,9 +20,12 @@
 .chatLayout {
     background-color: gray;
     flex: 5;
+}
+
+.chat {
+    height: 100%;
     display: flex;
     flex-direction: column;
-    justify-content: flex-end;
 }
 
 .messageBar {
@@ -30,5 +33,9 @@
 }
 .users {
     background-color: white;
+    flex: 1;
+}
+
+.activeUser{
     flex: 1;
 }
