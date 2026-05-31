@@ -1,11 +1,25 @@
 import '../styles/dashBoard.css'
 import Header from './Header';
-function Dashboard() {
-    function fetchUsers() {
-        console.log('users');
-    }
+import getApiUrl from'../utils/getApiUrl';
+import { useEffect, useState } from 'react';
 
-    fetchUsers();
+function Dashboard() {
+    const [users, setUsers] = useState(null);
+
+
+    useEffect(() => {
+        async function fetchUsers() {
+            const response = await fetch(getApiUrl() + '/users', {
+                headers: {
+                    "Content-Type": "application/json"
+                },
+            });
+            const result = await response.json();
+            setUsers(result);
+        }
+        fetchUsers();
+    }, []);
+
     return (
         <div className='dashBoardWrapper'>
             <Header></Header>
@@ -21,7 +35,14 @@ function Dashboard() {
                 </div>
                 <div className="users">
                     <h1>Users</h1>
-                    <button>Chat with this user each</button>
+                    {users ? users.map((user) => {
+                        return (
+                            <div key={user.id}>
+                                <h1>{user.username}</h1>
+                                <button>Message this user</button>
+                            </div>)
+                    })
+                    : <h1>No Users found</h1>}
                 </div>
             </div>
         </div>
