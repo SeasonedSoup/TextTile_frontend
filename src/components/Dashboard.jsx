@@ -5,7 +5,8 @@ import { useEffect, useState } from 'react';
 
 function Dashboard() {
     const [users, setUsers] = useState(null);
-
+    const [user, activeUser] = useState(null);
+    const [activeForm, setActiveForm] = useState(false);
 
     useEffect(() => {
         async function fetchUsers() {
@@ -20,11 +21,25 @@ function Dashboard() {
         fetchUsers();
     }, []);
 
+
+
+
+
     return (
         <div className='dashBoardWrapper'>
             <Header></Header>
             <div className='mainContainer'>
                 <div className="chatChoice">
+                    <button>Create Chat</button>
+                    {users && <form action="#">
+                                <select name="user" id="username">
+                                    {users.map((user) => {
+                                        return <option value={user.username}>{user.username}</option>
+                                    })}
+                                </select>
+                                <button>Message This User</button>
+                                </form>
+                    }
                     <h1>Chats</h1>
                 </div>
                 <div className="chatLayout">
