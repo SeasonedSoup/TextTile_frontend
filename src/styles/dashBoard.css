@@ -28,6 +28,10 @@
     flex-direction: column;
 }
 
+.chatBox {
+    background-color: aliceblue;
+}
+
 .messageBar {
     width: 94.3%;
 }

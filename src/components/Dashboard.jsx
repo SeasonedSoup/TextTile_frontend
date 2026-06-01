@@ -5,8 +5,7 @@ import { useEffect, useState } from 'react';
 
 function Dashboard() {
     const [users, setUsers] = useState(null);
-    const [activeUser, setActiveUser] = useState(null);
-    const [activeForm, setActiveForm] = useState(false);
+    const [activeUser, setActiveUser] = useState({username: "", id: ""});
 
     useEffect(() => {
         async function fetchUsers() {
@@ -21,12 +20,24 @@ function Dashboard() {
         fetchUsers();
     }, []);
 
-    function messageUser(e) {
-        e.preventDefault();
 
-        const formData = new FormData(e.target);
-        const selectedUser = formData.get("user");
-        setActiveUser(selectedUser);
+    const [message, setMessage] = useState('');
+    async function sendMessage() {
+        if (!message) return;
+
+        const token = localStorage.getItem('token');
+
+        const response = await fetch(getApiUrl() + '/conversation', {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                "Authorization": `Bearer ${token}`
+            },
+            body: JSON.stringify({
+                text: message,
+                receiverId: activeUser.id
+            })
+        })
     }
 
 
@@ -36,24 +47,22 @@ function Dashboard() {
             <Header></Header>
             <div className='mainContainer'>
                 <div className="chatChoice">
-                    <button>Create Chat</button>
-                    {users && <form action="#" onSubmit={messageUser}>
-                                <select name="user" id="username">
-                                    {users.map((user) => {
-                                        return <option key={user.username} value={user.username}>{user.username}</option>
-                                    })}
-                                </select>
-                                <button>Message This User</button>
-                                </form>
-                    }
                     <h1>Chats</h1>
                 </div>
                 <div className="chatLayout">
-                    { activeUser ?  
+                    { activeUser.username ?  
                         <div className='chat'>
-                            <h1 className='activeUser'>{activeUser}</h1>
+                            <h1 className='activeUser'>{activeUser.username}</h1>
+                            <div className='chatHistory'>
+                                <div className='chatBox'>
+                                    <h1>Hello!</h1>
+                                </div>
+                                <div className='chatBox'>
+                                    <h1>Hi!</h1>
+                                </div>
+                            </div>
                             <div className='message'>
-                                <input className="messageBar" />
+                                <input className="messageBar" value={message} onChange={(e) => setMessage(e.target.value)} />
                                 <button>Message user</button>
                             </div> 
                         </div> : <h1>No active messages say hi to a user!</h1>
@@ -65,7 +74,7 @@ function Dashboard() {
                         return (
                             <div key={user.id}>
                                 <h1>{user.username}</h1>
-                                <button onClick={() => setActiveUser(user.username)}>Message this user</button>
+                                <button onClick={() => setActiveUser({username: user.username, id: user.id})}>Message this user</button>
                             </div>)
                     })
                     : <h1>No Users found</h1>}
