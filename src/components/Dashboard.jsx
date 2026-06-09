@@ -72,15 +72,15 @@ function Dashboard() {
 
         if (!activeConversation) {
             const response = await fetch(getApiUrl() + '/conversation', {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-                "Authorization": `Bearer ${token}`
-            },
-            body: JSON.stringify({
-                text: message,
-                receiverId: activeUser.id
-            })
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    "Authorization": `Bearer ${token}`
+                },
+                body: JSON.stringify({
+                    text: message,
+                    receiverId: activeUser.id
+                })
             });
 
             const result = response.json();
@@ -94,13 +94,15 @@ function Dashboard() {
             },
             body: JSON.stringify({
                 text: message,
-                receiverId: activeUser.id
-                //conversationId: 
+                receiverId: activeUser.id,
+                conversationId: activeConversation.id 
             })
             });
             const result = response.json();
             console.log(result);
         }
+        fetchActiveConversation(activeUser.id);
+        setMessage('');
     }
 
 
@@ -117,7 +119,7 @@ function Dashboard() {
                         const targetUser = conversation.users.find((targetUser) => targetUser.id !== user.id )
                         return ( 
                             <div className="conversation" key={conversation.id} 
-                            onClick={() => {setActiveUser({username: targetUser.username, id: targetUser.id}); fetchActiveConversation(user.id);}}>
+                            onClick={() => {setActiveUser({username: targetUser.username, id: targetUser.id}); fetchActiveConversation(targetUser.id);}}>
                                 Conversation with {targetUser.username} 
                             </div>
                         )
@@ -129,12 +131,9 @@ function Dashboard() {
                         <div className='chat'>
                             <h1 className='activeUser'>{activeUser.username}</h1>
                             <div className='chatHistory'>
-                                <div className='chatBox'>
-                                    <h1>Hello!</h1>
-                                </div>
-                                <div className='chatBox'>
-                                    <h1>Hi!</h1>
-                                </div>
+                                {activeConversation && activeConversation.messages.map((message) => {
+                                    return <div key={message.id} className='chatBox'> <h1>{message.user.username}: {message.text} </h1></div>
+                                })}
                             </div>
                             <div className='message'>
                                 <input className="messageBar" value={message} onChange={(e) => setMessage(e.target.value)} />
