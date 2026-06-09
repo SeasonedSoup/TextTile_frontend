@@ -43,3 +43,13 @@
 .activeUser{
     flex: 1;
 }
+
+.conversation {
+    font-size: 2em;
+    background-color: rgba(221, 177, 177, 0.753);
+}
+
+.conversation:hover {
+    background-color: rgb(221, 177, 177);
+    cursor: pointer;
+}

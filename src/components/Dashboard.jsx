@@ -6,7 +6,7 @@ import { useAuth } from './AuthToken/AuthContext';
 function Dashboard() {
     const [users, setUsers] = useState(null);
     const [activeUser, setActiveUser] = useState({username: "", id: ""});
-    const[activeConversation, setActiveConversation] = useState(false);
+    const[activeConversation, setActiveConversation] = useState(null);
     const [conversations, setConversations] = useState([]);
     const {user} = useAuth();
 
@@ -41,10 +41,10 @@ function Dashboard() {
         fetchConversations();
     }, []);
 
-    async function fetchActiveConversation() {
+    async function fetchActiveConversation(userId) {
          const token = localStorage.getItem('token');
             
-            const response = await fetch(getApiUrl() + `/getConversation/${activeUser.id}`, {
+            const response = await fetch(getApiUrl() + `/getConversation/${userId}`, {
                 method: "GET",
                 headers: {
                     "Content-Type": "application/json",
@@ -53,13 +53,12 @@ function Dashboard() {
             });
             const result = await response.json();
         
-            if (result) {
+            if (result !== null) {
                 console.log("conversation already exists");
-                setActiveConversation(true);
             } else {
-                conversations.log("no conversations exist");
-                setActiveConversation(false);
+                console.log("no conversations exist");
             }
+            setActiveConversation(result);
     }
 
     //message
@@ -96,6 +95,7 @@ function Dashboard() {
             body: JSON.stringify({
                 text: message,
                 receiverId: activeUser.id
+                //conversationId: 
             })
             });
             const result = response.json();
@@ -116,7 +116,10 @@ function Dashboard() {
                       {conversations.map((conversation) => {
                         const targetUser = conversation.users.find((targetUser) => targetUser.id !== user.id )
                         return ( 
-                            <div key={conversation.id}>Conversation with {targetUser.username} </div>
+                            <div className="conversation" key={conversation.id} 
+                            onClick={() => {setActiveUser({username: targetUser.username, id: targetUser.id}); fetchActiveConversation(user.id);}}>
+                                Conversation with {targetUser.username} 
+                            </div>
                         )
                       })}
                     </div> }
@@ -146,7 +149,7 @@ function Dashboard() {
                         return (
                             <div key={user.id}>
                                 <h1>{user.username}</h1>
-                                <button onClick={() => {setActiveUser({username: user.username, id: user.id}); fetchActiveConversation();}}>Message this user</button>
+                                <button onClick={() => {setActiveUser({username: user.username, id: user.id}); fetchActiveConversation(user.id);}}>Message this user</button>
                             </div>)
                     })
                     : <h1>No Users found</h1>}
