@@ -16,3 +16,10 @@
     display: flex;
     flex-direction: column;
 }
+
+.profilePicture {
+    border-radius: 50%;
+    width: 60px;
+    height: 60px;
+    border: solid 2px black;
+}

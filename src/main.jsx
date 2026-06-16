@@ -4,7 +4,7 @@ import {createBrowserRouter, RouterProvider} from 'react-router';
 import './index.css';
 import App from './App.jsx';
 import Dashboard from './components/Dashboard.jsx';
-import Profile from './Profile.jsx';
+import Profile from './components/Profile.jsx';
 
 import { AuthProvider } from './components/AuthToken/AuthProvider.jsx';
 const router = createBrowserRouter([
