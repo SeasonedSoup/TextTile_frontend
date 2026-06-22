@@ -3,12 +3,15 @@ import Header from './Header';
 import getApiUrl from'../utils/getApiUrl';
 import { useEffect, useState } from 'react';
 import { useAuth } from './AuthToken/AuthContext';
+import { useNavigate } from 'react-router';
 function Dashboard() {
     const [users, setUsers] = useState(null);
     const [activeUser, setActiveUser] = useState({username: "", id: ""});
     const[activeConversation, setActiveConversation] = useState(null);
     const [conversations, setConversations] = useState([]);
     const {user} = useAuth();
+
+    const navigate = useNavigate();
 
     useEffect(() => {
         async function fetchUsers() {
@@ -105,6 +108,10 @@ function Dashboard() {
         setMessage('');
     }
 
+    function viewProfile(user) {
+        navigate(`/${user.username}/profile`, {state: {user}})
+    }
+
 
 
     return (
@@ -138,6 +145,7 @@ function Dashboard() {
                             <div className='message'>
                                 <input className="messageBar" value={message} onChange={(e) => setMessage(e.target.value)} />
                                 <button onClick={sendMessage}>Message user</button>
+                            
                             </div> 
                         </div> : <h1>No active messages say hi to a user!</h1>
                     }
@@ -149,6 +157,7 @@ function Dashboard() {
                             <div key={user.id}>
                                 <h1>{user.username}</h1>
                                 <button onClick={() => {setActiveUser({username: user.username, id: user.id}); fetchActiveConversation(user.id);}}>Message this user</button>
+                                <button onClick={() => viewProfile(user)}>View Profile</button>
                             </div>)
                     })
                     : <h1>No Users found</h1>}

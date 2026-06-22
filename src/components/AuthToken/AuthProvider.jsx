@@ -6,9 +6,9 @@ export const AuthProvider = ({children}) => {
     const [user, setUser] = useState(null);
     const [userLoading, setUserLoading] = useState(true);
     
+    useEffect(() => {
     async function verifyAuth() {
 
-        //first part
         const token = localStorage.getItem("token");
 
         if(!token) {
@@ -17,8 +17,7 @@ export const AuthProvider = ({children}) => {
             return;
         }
 
-        //second part verify token
-        const url = getApiUrl() + `/`
+        const url = getApiUrl() + `/auth-verify`
         try {
             const response = await fetch(url, {
             method: "GET",
@@ -42,13 +41,12 @@ export const AuthProvider = ({children}) => {
         }
     }
 
-     useEffect(() => {
         verifyAuth();
         console.log("VERIFYING TOKEN");
     }, []); 
 
     return (
-        <AuthContext.Provider value={{user, setUser, userLoading, verifyAuth}}>
+        <AuthContext.Provider value={{user, setUser, userLoading}}>
             {children}
         </AuthContext.Provider>
     )

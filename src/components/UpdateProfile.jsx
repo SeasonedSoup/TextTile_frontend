@@ -1,6 +1,6 @@
 import '../styles/profile.css'
 import getApiUrl from '../utils/getApiUrl';
-import { useState, useEffect } from 'react';
+import { useState} from 'react';
 import { useAuth } from './AuthToken/AuthContext';
 function Profile() {
     const {user} = useAuth(); 
@@ -19,22 +19,6 @@ function Profile() {
         }
     }
 
-    useEffect(() => {
-    if (user) {
-       
-        if (!username && user.username) {
-            setUsername(user.username);
-        }
-        if (!aboutMe && user.aboutMe) {
-            setAboutMe(user.aboutMe);
-        }
-        
-        if (!imageFile && user.profilePicture) {
-            setProfileUrl(user.profilePicture);
-        }
-    }
-    // We include username, aboutMe, and imageFile to satisfy React's compiler rules
-}, [user, username, aboutMe, imageFile]);
 
     const updateProfile = async (e) => {
         e.preventDefault();

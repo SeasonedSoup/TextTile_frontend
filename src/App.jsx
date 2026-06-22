@@ -7,7 +7,7 @@ import { useAuth } from './components/AuthToken/AuthContext';
 function App() {
   const [showForm, setShowForm] = useState(false);
   const [activeForm, setActiveForm] = useState('none');
-  const {verifyAuth} = useAuth();
+  const {setUser} = useAuth();
 
   function signUp() {
     if (showForm) {
@@ -27,9 +27,9 @@ function App() {
     }
   }
 
-    const [username, setUsername] = useState("")
-    const [password, setPassword] = useState("")
-    const [confirmPassword, setConfirmPassword] = useState("")
+  const [username, setUsername] = useState("")
+  const [password, setPassword] = useState("")
+  const [confirmPassword, setConfirmPassword] = useState("")
 
   async function createAccount(e) {
     e.preventDefault();
@@ -45,18 +45,14 @@ function App() {
         headers: {
           "Content-Type": "application/json"
         },
-        body: JSON.stringify({
-          username,
-          password
-        })
+        body: JSON.stringify({username, password})
       });
 
       if(!result.ok) {
         throw new Error(`Error status: ${result.status}`);
       }
 
-      console.log(result);
-      verifyAuth();
+      setUser(result);
     } catch (err) {
       console.error(err);
     }
@@ -85,9 +81,9 @@ function App() {
         throw new Error(`Error status: ${response.status}`);
       }
       const data = await response.json();
-        localStorage.setItem("token", data.token);
-        console.log("You got a token");
-        verifyAuth();
+      localStorage.setItem("token", data.token);
+      setUser(data.user);
+
     } catch (err) {
       console.error(err);
     }

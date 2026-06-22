@@ -4,8 +4,8 @@ import {createBrowserRouter, RouterProvider} from 'react-router';
 import './index.css';
 import App from './App.jsx';
 import Dashboard from './components/Dashboard.jsx';
-import Profile from './components/Profile.jsx';
-
+import Profile from './components/UpdateProfile.jsx';
+import ProfileDetails from './components/ProfileDetails.jsx';
 import { AuthProvider } from './components/AuthToken/AuthProvider.jsx';
 const router = createBrowserRouter([
   {
@@ -19,6 +19,10 @@ const router = createBrowserRouter([
   {
     path: '/profile',
     element: <Profile/>
+  },
+  {
+    path: '/:username/profile',
+    element: <ProfileDetails/>
   }
 ]);
 
