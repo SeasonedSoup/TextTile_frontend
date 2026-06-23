@@ -4,6 +4,7 @@ import './styles/reset.css'
 import Header from './components/Header';
 import getApiUrl from './utils/getApiUrl';
 import { useAuth } from './components/AuthToken/AuthContext';
+import returnIcon from './assets/return-button.png'
 function App() {
   const [showForm, setShowForm] = useState(false);
   const [activeForm, setActiveForm] = useState('none');
@@ -25,6 +26,11 @@ function App() {
       setShowForm(true);
       setActiveForm('login');
     }
+  }
+
+  function closeModal() {
+    setShowForm(false);
+    setActiveForm(null);
   }
 
   const [username, setUsername] = useState("")
@@ -51,8 +57,6 @@ function App() {
       if(!result.ok) {
         throw new Error(`Error status: ${result.status}`);
       }
-
-      setUser(result);
     } catch (err) {
       console.error(err);
     }
@@ -102,26 +106,38 @@ function App() {
       <button className="signUpBtn" onClick={login}>Log In</button>
       
       {showForm && activeForm === 'signup' &&
-      <form className='signUpForm' method="POST" onSubmit={createAccount} >
-        <label htmlFor="username">Username: </label>
-        <input type="text" id="username" name="username" value={username} onChange={(e) => setUsername(e.target.value)} />
-        <label htmlFor="password">Password</label>
-        <input type="password" name="password" id="password" value={password} onChange={(e) => setPassword(e.target.value)} autoComplete="new-password"/>
-        <label htmlFor="confirmPassword">Confirm Password:</label>
-        <input type="password" htmlFor="confirmPassword" value={confirmPassword} onChange={(e) => setConfirmPassword(e.target.value)} autoComplete="new-password"/>
+        <div className='modal'>
+          <form className='signUpForm' method="POST" onSubmit={createAccount} >
+            <button className='close-btn' type='button' onClick={closeModal}>
+              <img src={returnIcon} alt="Go back" />
+            </button>
+            <h1>Sign up</h1>
+            <label htmlFor="username">Username: </label>
+            <input type="text" id="username" name="username" value={username} onChange={(e) => setUsername(e.target.value)} placeholder='Enter Username'required />
+            <label htmlFor="password">Password:</label>
+            <input type="password" name="password" id="password" value={password} onChange={(e) => setPassword(e.target.value)} autoComplete="new-password" placeholder='••••••••' required/>
+            <label htmlFor="confirmPassword">Confirm Password:</label>
+            <input type="password" htmlFor="confirmPassword" value={confirmPassword} onChange={(e) => setConfirmPassword(e.target.value)} autoComplete="new-password"  placeholder='••••••••'required/>
 
-        <button>Create Account</button>
-      </form>
+            <button className='submit-btn'>Create Account</button>
+          </form>
+        </div>
       }
 
       { showForm && activeForm === 'login' &&
-        < form className='loginForm' method="POST" onSubmit={loginAccount}>
-        <label htmlFor="username">Username: </label>
-        <input type="text" id="username" name="username" value={username} onChange={(e) => setUsername(e.target.value)} autoComplete="username" />
-        <label htmlFor="password">Password</label>
-        <input type="password" name="password" id="password" value={password} onChange={(e) => setPassword(e.target.value)} autoComplete="current-password"/>
-        <button>Log In</button>
-      </form>
+        <div className='modal'>
+          <form className='loginForm' method="POST" onSubmit={loginAccount}>
+            <button className='close-btn' type='button' onClick={closeModal}>
+              <img src={returnIcon} alt="Go back" />
+            </button>
+            <h1 >Log in</h1>
+            <label htmlFor="username">Username: </label>
+            <input type="text" id="username" name="username" value={username} onChange={(e) => setUsername(e.target.value)} autoComplete="username" required />
+            <label htmlFor="password">Password</label>
+            <input type="password" name="password" id="password" value={password} onChange={(e) => setPassword(e.target.value)} autoComplete="current-password"  placeholder='••••••••' required/>
+            <button className='submit-btn'>Log In</button>
+          </form>
+        </div>
       }
       <a href="/TextTile-Dashboard">VIEW DASHBOARD</a>
     </div>
