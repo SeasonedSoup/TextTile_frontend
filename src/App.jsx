@@ -5,10 +5,12 @@ import Header from './components/Header';
 import getApiUrl from './utils/getApiUrl';
 import { useAuth } from './components/AuthToken/AuthContext';
 import returnIcon from './assets/return-button.png'
+import Dashboard from './components/Dashboard';
+
 function App() {
   const [showForm, setShowForm] = useState(false);
   const [activeForm, setActiveForm] = useState('none');
-  const {setUser} = useAuth();
+  const {user, setUser} = useAuth();
 
   function signUp() {
     if (showForm) {
@@ -87,12 +89,15 @@ function App() {
       const data = await response.json();
       localStorage.setItem("token", data.token);
       setUser(data.user);
-
+      
     } catch (err) {
       console.error(err);
     }
   }
   
+  if (user) {
+    return <Dashboard/>
+  }
 
 
   return (

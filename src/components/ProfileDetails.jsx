@@ -1,5 +1,5 @@
 import { useLocation } from "react-router";
-
+import DefaultProfile from '../assets/user.png';
 function ProfileDetails() {
     const location = useLocation();
     const user = location.state?.user;
@@ -16,9 +16,7 @@ function ProfileDetails() {
                     {user?.profilePicture ? (
                         <img src={user?.profilePicture} alt={`${user?.username}'s profile`} className='profilePicture'/>
                     ) : (
-                        <div className='defaultAvatar'>
-                            {'NO AVATAR IS HERE'}
-                        </div>
+                        <img src={DefaultProfile} alt={`${user?.username}'s profile`} className='profilePicture'/>
                     )}
                 </div>
                    

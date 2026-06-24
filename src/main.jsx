@@ -3,7 +3,6 @@ import { createRoot } from 'react-dom/client';
 import {createBrowserRouter, RouterProvider} from 'react-router';
 import './index.css';
 import App from './App.jsx';
-import Dashboard from './components/Dashboard.jsx';
 import Profile from './components/UpdateProfile.jsx';
 import ProfileDetails from './components/ProfileDetails.jsx';
 import { AuthProvider } from './components/AuthToken/AuthProvider.jsx';
@@ -11,10 +10,6 @@ const router = createBrowserRouter([
   {
     path: "/",
     element: <App/>
-  },
-  {
-    path: "/TextTile-Dashboard",
-    element: <Dashboard/>
   },
   {
     path: '/profile',

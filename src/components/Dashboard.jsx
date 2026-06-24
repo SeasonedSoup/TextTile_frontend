@@ -20,14 +20,15 @@ function Dashboard() {
                     "Content-Type": "application/json"
                 },
             });
-            const result = await response.json();
+            let result = await response.json();
+
+            result = result.filter((otherUser) => otherUser.id != user.id);
             setUsers(result);
         }
         fetchUsers();
-    }, []);
-
-    useEffect(() => {
-        async function fetchConversations() {
+    }, [user.id]);
+    
+    async function fetchConversations() {
             const token = localStorage.getItem('token');
             
             const response = await fetch(getApiUrl() + '/conversation', {
@@ -39,9 +40,15 @@ function Dashboard() {
             });
             const result = await response.json();
             console.log("Conversations", result);
+            return result;
+        }
+    useEffect(() => {
+        async function loadConversations() {
+            const result = await fetchConversations();
             setConversations(result);
         }
-        fetchConversations();
+
+        loadConversations();
     }, []);
 
     async function fetchActiveConversation(userId) {
@@ -105,6 +112,9 @@ function Dashboard() {
             console.log(result);
         }
         fetchActiveConversation(activeUser.id);
+        const updatedConversations = await fetchConversations();
+        
+        setConversations(updatedConversations)
         setMessage('');
     }
 
@@ -143,9 +153,10 @@ function Dashboard() {
                                 })}
                             </div>
                             <div className='message'>
-                                <input className="messageBar" value={message} onChange={(e) => setMessage(e.target.value)} />
-                                <button onClick={sendMessage}>Message user</button>
-                            
+                                <div className='message-container'>
+                                    <input className="messageBar" value={message} onChange={(e) => setMessage(e.target.value)} />
+                                    <button onClick={sendMessage}>Message user</button>
+                                </div>
                             </div> 
                         </div> : <h1>No active messages say hi to a user!</h1>
                     }
