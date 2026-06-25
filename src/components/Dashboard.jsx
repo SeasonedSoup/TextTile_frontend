@@ -149,7 +149,7 @@ function Dashboard() {
                             <h1 className='activeUser'>{activeUser.username}</h1>
                             <div className='chatHistory'>
                                 {activeConversation && activeConversation.messages.map((message) => {
-                                    return <div key={message.id} className='chatBox'> <h1>{message.user.username}: {message.text} </h1></div>
+                                    return <div key={message.id} className={user.id === message.user.id ? 'you' : 'chatBox'}> <h1>{message.user.username}: {message.text} </h1></div>
                                 })}
                             </div>
                             <div className='message'>
