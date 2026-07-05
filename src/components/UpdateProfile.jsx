@@ -76,6 +76,7 @@ function Profile() {
         const result = await fetch(getApiUrl() + '/changePassword' , {
             method: 'PATCH',
             headers: {
+                'Content-Type': 'application/json',
                 'Authorization': `Bearer ${token}` 
             },
             body: JSON.stringify({oldPassword: oldPass, newPassword: newPass})
@@ -105,6 +106,7 @@ function Profile() {
                     <input type="password" htmlFor="newPassword" autoComplete='new-password' value={newPass} onChange={(e) => setNewPass(e.target.value)} />
                     <label htmlFor="confirmPassword">Confirm Password:</label>
                     <input type="password" htmlFor="confirmPassword" autoComplete='new-password' value={confirmPass} onChange={(e) => setConfirmPass(e.target.value)} />
+                    <button>Change Password</button>
                 </form>
             </div>
         </div>
