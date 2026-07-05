@@ -59,6 +59,8 @@ function App() {
       if(!result.ok) {
         throw new Error(`Error status: ${result.status}`);
       }
+      alert('User successfully created, login now!')
+
     } catch (err) {
       console.error(err);
     }
@@ -101,8 +103,9 @@ function App() {
 
 
   return (
-    <div className='wrapper'>
+    <div className='open'>
       <Header></Header>
+    <div className='wrapper'>
       <div className='text'>
         <h1 className='callToAction'>Welcome to TextTile</h1>
         <h2>TextTile is a cool chatting platform where you can chat and talk with other people! (not real-time) <br /> Sign Up now with your username! </h2>
@@ -144,7 +147,7 @@ function App() {
           </form>
         </div>
       }
-      <a href="/TextTile-Dashboard">VIEW DASHBOARD</a>
+    </div>
     </div>
   )
 }

@@ -1,15 +1,29 @@
 import '../styles/profile.css'
 import getApiUrl from '../utils/getApiUrl';
-import { useState} from 'react';
+import { useState, useEffect} from 'react';
 import { useAuth } from './AuthToken/AuthContext';
 function Profile() {
     const {user} = useAuth(); 
 
-    const [username, setUsername] = useState(user?.username || '');
-    const [aboutMe, setAboutMe] = useState( user?.aboutMe || '');
-    const [profileUrl, setProfileUrl] = useState(user?.profilePicture || null);
+    const [username, setUsername] = useState('');
+    const [aboutMe, setAboutMe] = useState('');
+    const [profileUrl, setProfileUrl] = useState(null);
     const [imageFile, setImageFile] = useState(null);
-    
+    const [oldPass, setOldPass] = useState('');
+    const [newPass, setNewPass] = useState('');
+    const [confirmPass, setConfirmPass] = useState('');
+
+    useEffect(() => {
+        function setProfile() {
+            setUsername(user.username || '');
+            setAboutMe(user.aboutMe || '');
+            setProfileUrl(user.profilePicture || null);
+        }
+    if (user) {
+        setProfile();
+    }
+  }, [user]);
+
     const profileChangeHandler = (e) => {
         const file = e.target.files[0];
 
@@ -43,11 +57,30 @@ function Profile() {
             });
 
             console.log(result)
-
+            alert('Profile updated successfully');
         } catch (err) {
             console.error('Error updating profile', err);
             alert('error unable to update profile');
         }
+    }
+
+    const changePassword = async(e) => {
+        e.preventDefault();
+
+        if (newPass != confirmPass) {
+            alert('Password confirmation and new password are not the same!')
+            return;
+        }
+        
+        const token = localStorage.getItem('token');
+        const result = await fetch(getApiUrl() + '/changePassword' , {
+            method: 'PATCH',
+            headers: {
+                'Authorization': `Bearer ${token}` 
+            },
+            body: JSON.stringify({oldPassword: oldPass, newPassword: newPass})
+        })
+        console.log(result)
     }
     return (
         <div className='profileLayout'>
@@ -65,13 +98,13 @@ function Profile() {
                 </form>
 
                 <button>Update password</button>
-                <form action="" className='passwordForm'>
+                <form action="" className='passwordForm' onSubmit={changePassword}>
                     <label htmlFor="prevPassword">Previous Password:</label>
-                    <input type="password" htmlFor="prevPassword" autoComplete='current-password'/>
+                    <input type="password" htmlFor="prevPassword" autoComplete='current-password' value={oldPass} onChange={(e) => setOldPass(e.target.value)}/>
                     <label htmlFor="newPassword">New Password:</label>
-                    <input type="password" htmlFor="newPassword" autoComplete='new-password' />
+                    <input type="password" htmlFor="newPassword" autoComplete='new-password' value={newPass} onChange={(e) => setNewPass(e.target.value)} />
                     <label htmlFor="confirmPassword">Confirm Password:</label>
-                    <input type="password" htmlFor="confirmPassword" autoComplete='new-password' />
+                    <input type="password" htmlFor="confirmPassword" autoComplete='new-password' value={confirmPass} onChange={(e) => setConfirmPass(e.target.value)} />
                 </form>
             </div>
         </div>

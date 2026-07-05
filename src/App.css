@@ -1,4 +1,13 @@
-#root, .wrapper {
+#root, .open {
+    height: 100%;
+}
+
+.open {
+    display: flex;
+    flex-direction: column;
+}
+
+.mainContainer {
     height: 100%;
 }
 
@@ -9,6 +18,8 @@
     background-color: rgb(0, 0, 0);
     color: rgb(73, 101, 126);
     padding: 4em;
+    flex: 1;
+
 }
 
 .text {
