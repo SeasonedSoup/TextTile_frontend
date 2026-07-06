@@ -5,6 +5,7 @@ import { useEffect, useState, useRef } from 'react';
 import { useAuth } from './AuthToken/AuthContext';
 import { useNavigate } from 'react-router';
 import DefaultProfile from '../assets/user.png';
+import MsgIcon from '../assets/paper-plane.png'
 
 function Dashboard() {
     const [users, setUsers] = useState(null);
@@ -168,7 +169,9 @@ function Dashboard() {
                             <div className='message'>
                                 <div className='message-container'>
                                     <input className="messageBar" value={message} onChange={(e) => setMessage(e.target.value)} />
-                                    <button onClick={sendMessage}>Message user</button>
+                                    <button className='msgBtn' onClick={sendMessage}>
+                                        <img className="msgIcon"src={MsgIcon} alt="" />
+                                    </button>
                                 </div>
                             </div> 
                         </div> : <h1>No active messages say hi to a user!</h1>
@@ -178,10 +181,12 @@ function Dashboard() {
                     <h1>Users</h1>
                     {users ? users.map((user) => {
                         return (
-                            <div key={user.id}>
+                            <div className='user' key={user.id}>
                                 <h1>{user.username}</h1>
-                                <button onClick={() => {setActiveUser({username: user.username, id: user.id}); fetchActiveConversation(user.id);}}>Message this user</button>
-                                <button onClick={() => viewProfile(user)}>View Profile</button>
+                                <div className='btns'> 
+                                    <button className='messageBtn' onClick={() => {setActiveUser({username: user.username, id: user.id}); fetchActiveConversation(user.id);}}>Message</button>
+                                    <button className='profileBtn' onClick={() => viewProfile(user)}>View Profile</button>
+                                </div>
                             </div>)
                     })
                     : <h1>No Users found</h1>}
