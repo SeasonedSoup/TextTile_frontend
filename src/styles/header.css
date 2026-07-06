@@ -1,12 +1,21 @@
 .header {
     position: relative;
     width: 100%;
-    background-color: rgb(134, 134, 134);
     display: flex;
     align-items: center;
     padding: 1em;
+    background-image: url('/hex.jpeg');
+    background-size: clamp(12em, 15em, 20em);
+    border-bottom: 6px solid rgb(78, 78, 78);
 }
 
 .headerTitle {
     flex: 1;
+    font-size: 3em;
+    color: rgb(54, 52, 49);
 }
+
+.profilePicture:hover {
+    cursor: pointer;
+}
+

@@ -1,9 +1,11 @@
 import '../styles/dashBoard.css'
 import Header from './Header';
 import getApiUrl from'../utils/getApiUrl';
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import { useAuth } from './AuthToken/AuthContext';
 import { useNavigate } from 'react-router';
+import DefaultProfile from '../assets/user.png';
+
 function Dashboard() {
     const [users, setUsers] = useState(null);
     const [activeUser, setActiveUser] = useState({username: "", id: ""});
@@ -12,6 +14,14 @@ function Dashboard() {
     const {user} = useAuth();
 
     const navigate = useNavigate();
+
+    const chatHistoryRef = useRef(null);
+
+    useEffect(() => {
+        if (chatHistoryRef.current) {
+            chatHistoryRef.current.scrollTop = chatHistoryRef.current.scrollHeight;
+        }
+    }, [activeConversation]); 
 
     useEffect(() => {
         async function fetchUsers() {
@@ -137,7 +147,10 @@ function Dashboard() {
                         return ( 
                             <div className="conversation" key={conversation.id} 
                             onClick={() => {setActiveUser({username: targetUser.username, id: targetUser.id}); fetchActiveConversation(targetUser.id);}}>
-                                Conversation with {targetUser.username} 
+                                <div className='userContainer'>
+                                    <h1 className='username'>{targetUser.username}</h1>
+                                    <img className='userProfile' src={targetUser.profilePicture || DefaultProfile }></img>
+                                </div> 
                             </div>
                         )
                       })}
@@ -147,7 +160,7 @@ function Dashboard() {
                     { activeUser.username ?  
                         <div className='chat'>
                             <h1 className='activeUser'>{activeUser.username}</h1>
-                            <div className='chatHistory'>
+                            <div className='chatHistory' ref={chatHistoryRef}>
                                 {activeConversation && activeConversation.messages.map((message) => {
                                     return <div key={message.id} className={user.id === message.user.id ? 'you' : 'chatBox'}> <h1>{message.user.username}: {message.text} </h1></div>
                                 })}

@@ -4,62 +4,126 @@
     display: flex;
     flex-direction: column;
 }
-
+/* Main Container */
 .mainContainer {
-    background-color: darkblue;
-    display: flex;
-    display: flex;
+    background-color: #222020;
+    color: #e4e4e4;
+    display: grid;
+    grid-template-columns: 280px 1fr 280px;
+    flex: 1;
+    height: 100%;
+    width: 100%;
     overflow: hidden;
 }
 
-.chatChoice {
-    flex: 1;
-    background-color: red;
+.mainContainer h1 {
+  font-size: 1.25rem;
+  font-weight: 600;
+  margin-bottom: 1rem;
+  color: #ffffff;
 }
 
+/* Left Side */
+.chatChoice {
+    border-right: 4px solid rgb(39, 39, 39);
+    padding: 1.5rem;
+    display: flex;         /* Added */
+    flex-direction: column;/* Added */
+    min-height: 0;
+}
+
+.conversations {
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 1em;
+}
+.conversation {
+    font-size: 1.25em;
+    cursor: pointer;
+    border-radius: 12px;
+    background-color: #686868;
+}
+
+.username {
+    flex: 1;
+}
+
+.userProfile {
+    height: 48px;
+    width: 48px;
+}
+
+.userContainer {
+    display: flex;
+    gap: 1em;
+    align-items: center;
+    padding: 0.6rem;
+}
+
+
+/* Middle Main Content */
 .chatLayout {
-    background-color: gray;
-    flex: 5;
+    display: flex;
+    flex-direction: column;
+    background-color: #2020201f;
+    height: 100%;
+    min-height: 0;
+}
+
+.chatLayout > h1 {
+  margin: auto;
+  color: #777;
+  font-size: 1.1rem;
 }
 
 .chat {
-    height: 100%;
     display: flex;
     flex-direction: column;
+    height: 100%;
+    min-height: 0; 
 }
 
 .activeUser {
-    background-color: wheat;
-    justify-self: center;
+  padding: 1.25rem 2rem;
+  background-color: #242424;
+  border-bottom: 1px solid #333;
 }
 
 .chatHistory {
-    flex: 1;
+    display: flex;
+    flex-direction: column;
+    padding: 1.5rem 2rem;
     overflow-y: auto;
+    flex: 1;  
+}
+
+.chatHistory h1 {
+    word-break: break-word;
 }
 
 
 .chatBox {
-    max-width: 40%;
+    max-width: 65%;
     padding: 8px 14px;
-    border-radius: 18px 18px 10px 0px;
-    background: white;
+    border-radius: 12px 12px 12px 0px;
+    background-color: #2d2d2d;
     box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
     align-self: flex-start;
     margin-bottom: 12px;
-    padding: 1rem;
+    padding: 0.75rem 1rem;
 }
 
 .you {
+    max-width: 65%;
     margin-left: auto;
-    max-width: 40%;
     padding: 8px 14px;
     border-radius: 18px 10px 0px 18px;
-    background: rgb(116, 195, 248);
+    background: rgb(49, 125, 238);
     box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
-    align-self: flex-start;
+    align-self: flex-end;
     margin-bottom: 12px; 
-    padding: 1rem;
+    padding: 0.75rem;
 }
 
 .message {
@@ -77,19 +141,39 @@
 .messageBar {
     flex: 1;
 }
+
+/* Right Side */
 .users {
-    background-color: white;
-    flex: 1;
+
+}
+
+.message {
+  padding: 1.25rem 2rem;
+  background-color: #242424;
+  border-top: 1px solid #333;
+  flex-shrink: 0;
 }
 
 
-.conversation {
-    font-size: 2em;
-    background-color: rgba(221, 177, 177, 0.753);
+/* SCROLL */
+.chatHistory, .conversations, .users {             /* Smooths out wheel or trackpad jumps */
+  -webkit-overflow-scrolling: touch;    /* Uses native GPU acceleration on mobile/trackpads */
+  will-change: transform;
+  scrollbar-gutter: stable;                /* Pre-allocates GPU layer for faster text rendering */
 }
 
-.conversation:hover {
-    background-color: rgb(221, 177, 177);
-    cursor: pointer;
+::-webkit-scrollbar {
+  width: 12px; 
 }
 
+::-webkit-scrollbar-track {
+  background: #222020; 
+}
+::-webkit-scrollbar-thumb {
+  background: #4a4a4a;
+  border-radius: 8px; 
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #666;
+}
