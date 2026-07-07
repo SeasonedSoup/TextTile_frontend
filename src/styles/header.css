@@ -11,6 +11,19 @@
 
 .headerTitle {
     flex: 1;
+    display: flex;
+    align-items: center;
+    gap: 2em;
+}
+
+.visitChat {
+    cursor: pointer;
+}
+.visitChat:hover {
+    color: rgb(75, 75, 75);
+    text-decoration: underline;
+}
+.headerText {
     font-size: 3em;
     color: rgb(54, 52, 49);
 }

@@ -2,6 +2,7 @@ import '../styles/profile.css'
 import getApiUrl from '../utils/getApiUrl';
 import { useState, useEffect} from 'react';
 import { useAuth } from './AuthToken/AuthContext';
+import Header from '../components/Header.jsx'
 function Profile() {
     const {user} = useAuth(); 
 
@@ -9,10 +10,12 @@ function Profile() {
     const [aboutMe, setAboutMe] = useState('');
     const [profileUrl, setProfileUrl] = useState(null);
     const [imageFile, setImageFile] = useState(null);
+    const [updatingPass, setUpdatingPass] = useState(false);
     const [oldPass, setOldPass] = useState('');
     const [newPass, setNewPass] = useState('');
     const [confirmPass, setConfirmPass] = useState('');
 
+    //state related handlers
     useEffect(() => {
         function setProfile() {
             setUsername(user.username || '');
@@ -33,6 +36,12 @@ function Profile() {
         }
     }
 
+    const toggleUpdateForm = () => {
+        setUpdatingPass(!updatingPass)
+    }
+
+
+    //Database related funcs
 
     const updateProfile = async (e) => {
         e.preventDefault();
@@ -84,30 +93,34 @@ function Profile() {
         console.log(result)
     }
     return (
-        <div className='profileLayout'>
-            <div className='profileModal'>
-                 <h1>Your Profile</h1>
-                <form action="" className='generalInfoForm' onSubmit={updateProfile}>
-                    <img src={profileUrl} alt="Your profile pic that you can edit with cloudinary upload and stuff" className='profilePicture'/>
-                    <label htmlFor="file">Change Photo: </label>
-                    <input type="file" id='file' name='file' accept='img/*' onChange={profileChangeHandler} />
-                    <label htmlFor="username">Username: </label>
-                    <input type="text" name="username" value={username} onChange={(e) => setUsername(e.target.value)}/>
-                    <label htmlFor="aboutme">About me: </label>
-                    <textarea name="aboutme" id="aboutme" value={aboutMe} onChange={(e) => setAboutMe(e.target.value)} ></textarea>
-                    <button>Update Profile</button>
-                </form>
+        <div className="mainWrapper">
+            <Header></Header>
+            <div className='profileLayout'>
+                <div className='profileModal'>
+                    <h1>Your Profile</h1>
+                    <form action="" className='generalInfoForm' onSubmit={updateProfile}>
+                        <img src={profileUrl} alt="Your profile pic that you can edit with cloudinary upload and stuff" className='profilePicture'/>
+                        <label htmlFor="file">Change Photo: </label>
+                        <input type="file" id='file' name='file' accept='img/*' onChange={profileChangeHandler} />
+                        <label htmlFor="username">Username: </label>
+                        <input type="text" name="username" value={username} onChange={(e) => setUsername(e.target.value)}/>
+                        <label htmlFor="aboutme">About me: </label>
+                        <textarea name="aboutme" id="aboutme" value={aboutMe} onChange={(e) => setAboutMe(e.target.value)} ></textarea>
+                        <button className='updProfileBtn'>Update Profile</button>
+                    </form>
 
-                <button>Update password</button>
-                <form action="" className='passwordForm' onSubmit={changePassword}>
-                    <label htmlFor="prevPassword">Previous Password:</label>
-                    <input type="password" htmlFor="prevPassword" autoComplete='current-password' value={oldPass} onChange={(e) => setOldPass(e.target.value)}/>
-                    <label htmlFor="newPassword">New Password:</label>
-                    <input type="password" htmlFor="newPassword" autoComplete='new-password' value={newPass} onChange={(e) => setNewPass(e.target.value)} />
-                    <label htmlFor="confirmPassword">Confirm Password:</label>
-                    <input type="password" htmlFor="confirmPassword" autoComplete='new-password' value={confirmPass} onChange={(e) => setConfirmPass(e.target.value)} />
-                    <button>Change Password</button>
-                </form>
+                    <button className='updPassBtn' onClick={toggleUpdateForm}>Update password</button>
+                </div>
+                {updatingPass &&
+                    <form action="" className='passwordForm' onSubmit={changePassword}>
+                        <label htmlFor="prevPassword">Previous Password:</label>
+                        <input type="password" htmlFor="prevPassword" autoComplete='current-password' value={oldPass} onChange={(e) => setOldPass(e.target.value)}/>
+                        <label htmlFor="newPassword">New Password:</label>
+                        <input type="password" htmlFor="newPassword" autoComplete='new-password' value={newPass} onChange={(e) => setNewPass(e.target.value)} />
+                        <label htmlFor="confirmPassword">Confirm Password:</label>
+                        <input type="password" htmlFor="confirmPassword" autoComplete='new-password' value={confirmPass} onChange={(e) => setConfirmPass(e.target.value)} />
+                        <button className='changePassBtn'> Change Password</button>
+                    </form> }
             </div>
         </div>
     )

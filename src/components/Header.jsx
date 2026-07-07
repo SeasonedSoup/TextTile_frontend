@@ -14,15 +14,24 @@ function Header() {
 
     const {user} = useAuth();
 
-     const editProfile = () => {
+    const editProfile = () => {
         if (user) {
             navigate('/profile');
         }
     }
 
+    const viewChats = () => {
+        if (user) {
+            navigate('/');
+        }
+    }
+
     return ( 
     <div className="header">
-        <h1 className='headerTitle'>TextTile</h1>
+        <div className='headerTitle'>
+             <h1 className='headerText'>TextTile</h1>
+            <h1 className="visitChat"onClick={viewChats}>Chats</h1>
+        </div>
 
         {user && <img src={user?.profilePicture || DefaultProfile} alt="default profile" className='profilePicture' onClick={editProfile}/> }
         {user && <h1>Hello, {user.username}</h1>}
